@@ -5,6 +5,7 @@ fetch('https://data.cdc.gov/resource/w9j2-ggv5.csv')
    .then(function (text){
     let series = csvToSeries(text);
     renderChart(series);
+    console.log(series)
    })
    .catch(function (error) {
     console.log(error);
@@ -13,20 +14,32 @@ fetch('https://data.cdc.gov/resource/w9j2-ggv5.csv')
 function csvToSeries(text) {
     const lifeExp = 'average_life_expectancy';
     let dataAsJson = JSC.csv2Json(text);
-    let male = [], female = [];
+    let Male = [], Female = [];
+    let White = [], Black = [];
+
+
     dataAsJson.forEach(function (row) {
-        //add either to male, female, or discard.
+        if(row.sex === 'Both Sexes'){
+            if(row.race === 'White'){
+                White.push({x: row.year, y: row[lifeExp]} );
+            } else if (row.race === 'Black') {
+                Black.push({x: row.year, y: row[lifeExp]} );
+            }
+        }
+        
+        // add either to male, female, or discard.
         if (row.race === 'All Races') {
             if (row.sex === 'Male') {
-                male.push({x: row.year, y: row[lifeExp]});
+                Male.push({x: row.year, y: row[lifeExp]});
+                
             } else if (row.sex === 'Female') {
-                female.push({x: row.year, y: row[lifeExp]});
+                Female.push({x: row.year, y: row[lifeExp]});
             }
         }
     });
     return [
-        {name: 'Male', points: male},
-        {name: 'Female', points: female}
+        {name: 'Black', points: Black},
+        {name: 'While', points: White}
     ];
     
 }
@@ -39,7 +52,7 @@ function renderChart(series){
             position: 'bottom left'
         }],
         legend_template: '%icon,%name',
-        legend_visible: false,
+        legend_visible: true,
         defaultSeries_lastPoint_label_test: '<b>%seriesName</b>',
         xAxis_crosshair_enabled: true,
         //xAxis: {crosshari: {enabled: true}},
