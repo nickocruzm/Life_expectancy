@@ -1,3 +1,4 @@
+
 fetch('https://data.cdc.gov/resource/w9j2-ggv5.csv')
    .then(function (response) {
     return response.text();
@@ -46,8 +47,8 @@ function csvToSeries(text) {
     
 }
 
-function renderCharts(series){
 
+function renderCharts(series){
     JSC.Chart('chartDivA',{
         title_label_text: 'Life Expectancy in the United States',
         annotations: [{
