@@ -61,7 +61,7 @@ function renderCharts(series){
         xAxis_crosshair_enabled: true,
         //xAxis: {crosshari: {enabled: true}},
         defaultPoint_tooltip: '%seriesName <b>%yValue</b> years', 
-        series: [series[0],series[1]]
+        series: series
     });
     JSC.Chart('chartDivB',{
         title_label_text: 'Life Expectancy in the United States',
